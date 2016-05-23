@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[WebComponents.org]]></title>
+        <description><![CDATA[A place to discuss and evolve Web Component best-practices]]></description>
+        <link>http://webcomponents.org</link>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Mon, 23 May 2016 13:00:21 GMT</lastBuildDate>
+        <atom:link href="http://webcomponents.org/articles.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Mon, 23 May 2016 12:59:29 GMT</pubDate>
+        <item>
+            <title><![CDATA[My experience with the Polymer app-route]]></title>
+            <description><![CDATA[<p>At the time of writing, the Polymer app-route is in beta. This element is designed to allow Polymer elements data-bind to the url of the site. This blog post will describe some of the issues encountered and depict solutions for said issues.</p>
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/my-experience-with-the-polymer-app-route</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/my-experience-with-the-polymer-app-route</guid>
+            <pubDate>Fri, 20 May 2016 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Web Components in production use – are we there yet?]]></title>
+            <description><![CDATA[<p>A lot of progress has been made since the introduction of the Web Components back in 2011. All major browsers have started implementation of the technologies needed to run web components natively. While browser vendors are still working on native implementations, libraries have been able to use a polyfill to make web components available to developers already.</p>
+<p>But what is the status of Web Components for actual production use in business applications?</p>
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/web-components-in-production-use-are-we-there-yet</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/web-components-in-production-use-are-we-there-yet</guid>
+            <pubDate>Tue, 26 Jan 2016 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Polymer in Production]]></title>
+            <description><![CDATA[<p>Lessons learnt from deploying Polymer in a production environment.</p>
+<!-- Excerpt -->
+<h1 id="bower-bingo">Bower bingo</h1>
+<p>At the time of writing, Polymer was dependent on <a href="http://bower.io/">Bower</a> to maintain and install itself and other components. One of the problems is when using large element bases like Google&#39;s <a href="https://elements.polymer-project.org">Paper Elements</a> is that you have a large Bower file to maintain, and on top of that even if you explicitly pin a specific version of a component, it can still itself pull in other dependent elements.</p>
+<p>Three solutions are:</p>
+<h2 id="manually-pin-all-elements-and-their-dependencies">Manually pin all elements and their dependencies</h2>
+<p>Pros: Complete control over all elements<br/>
+Cons: Laborious to maintain</p>
+<h2 id="commit-bower-components-to-a-repository">Commit Bower components to a repository</h2>
+<p>Pros: You can simplify your Bower file, and have confidence in the code going into production<br/>
+Cons: Large and messy repository</p>
+<h2 id="commit-bower-components-to-a-separate-location">Commit Bower components to a separate location</h2>
+<p>Pros: Confidence in code going from testing into production<br/>
+Cons: Extra build step required to pull this into codebase</p>
+<p>NPM has a useful <a href="https://docs.npmjs.com/cli/shrinkwrap">shrinkwrap</a> ability that would alleviate the problems above.</p>
+<p>Polymer NPM support issues:</p>
+<ul>
+<li><a href="https://github.com/Polymer/polymer/issues/2578#issuecomment-151580862">https://github.com/Polymer/polymer/issues/2578#issuecomment-151580862</a></li>
+<li><a href="https://github.com/Polymer/polymer/issues/2525#issuecomment-145355985">https://github.com/Polymer/polymer/issues/2525#issuecomment-145355985</a></li>
+</ul>
+<h1 id="gulp-build">Gulp build</h1>
+<p>Polymer has a vulcanization step that combines all the web components needed into one dependent file (rather than lots of smaller files). This step can be added to gulp:</p>
+<pre class="highlight"><code class="hljs javascript"><span class="hljs-keyword">var</span> polybuild = <span class="hljs-built_in">require</span>(<span class="hljs-string">'polybuild'</span>);
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">vulc</span><span class="hljs-params">(name,output)</span></span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">return</span> gulp.src(name)
+    .pipe(polybuild({maximumCrush: <span class="hljs-literal">true</span>}))
+    .pipe(gulp.dest(output));
+  }
+}
+
+gulp.task(<span class="hljs-string">'vulcanize_homepage'</span>,vulc(<span class="hljs-string">'src/homepage.html'</span>,<span class="hljs-string">'dist/'</span>));
+</code></pre><p><a href="https://github.com/PolymerLabs/polybuild">Polybuild</a> is a tool that lives on top of vulcanize and makes it super easy to vulcanise a file and split the output into two files (one JS and one HTML). The example above combines all the imports for the homepage and saves the output in the <em>dist</em> directory.</p>
+<p>When developing your site, vulcanization is not necessary, so you can simplify your pipeline by having two gulp tasks, one for dev that runs and CSS tasks etc and one for production that has the vulcanization step afterwards.</p>
+<pre class="highlight"><code class="hljs handlebars"><span class="xml"></span><span class="hljs-expression">{{<span class="hljs-begin-block">#<span class="hljs-keyword">if</span> vulcanized</span>}}</span><span class="xml">
+  <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"import"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/dist/page-home.build.html"</span> /&gt;</span>
+</span><span class="hljs-expression">{{<span class="hljs-variable"><span class="hljs-keyword">else</span></span>}}</span><span class="xml">
+  <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"import"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/bower_components/polymer/polymer.html"</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-title">link</span> <span class="hljs-attribute">rel</span>=<span class="hljs-value">"import"</span> <span class="hljs-attribute">href</span>=<span class="hljs-value">"/src/page-home.html"</span> /&gt;</span>
+</span><span class="hljs-expression">{{<span class="hljs-end-block">/<span class="hljs-keyword">if</span></span>}}</span><span class="xml">
+</span></code></pre><p>The example above is a templated HTML file that can serve both development purposes, and QA/production purposes depending on whether an environment variable is set.</p>
+<h2 id="polylint">Polylint</h2>
+<p><a href="https://github.com/PolymerLabs/polylint">Polylint</a> does a very basic sanity check of your elements (and follows the dependency chain) giving you some piece of mind in the build process.</p>
+<pre class="highlight"><code class="hljs javascript"><span class="hljs-keyword">var</span> polylint = <span class="hljs-built_in">require</span>(<span class="hljs-string">'polylint'</span>);
+<span class="hljs-keyword">var</span> colors = <span class="hljs-built_in">require</span>(<span class="hljs-string">'colors/safe'</span>);
+
+gulp.task(<span class="hljs-string">'polylint'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(cb)</span> </span>{
+  <span class="hljs-keyword">var</span> errors = polylint(<span class="hljs-string">'src/elements.html'</span>);
+
+  errors.then(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(errors)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;i &lt; errors.length;i++) {
+      <span class="hljs-keyword">var</span> warning = errors[i];
+      warning = colors.red(warning.filename) + <span class="hljs-string">":"</span> +
+        warning.location.line + <span class="hljs-string">":"</span> + warning.location.column +
+        <span class="hljs-string">"\n    "</span> + colors.gray(warning.message);
+      <span class="hljs-built_in">console</span>.log(warning);
+    }
+    cb();
+  });
+});
+</code></pre><p>The example above starts at the file <em>src/elements.html</em> and lints and follows the dependency tree and prints its output.</p>
+<h1 id="docker">Docker</h1>
+<p>Once you have a build pipeline (and a way to control external dependencies), one deployment option is Docker. You can deploy your code, and get Docker to build the distribution environment.</p>
+<pre class="highlight"><code class="hljs gradle">RUN node_modules<span class="hljs-regexp">/.bin/gu</span>lp polymer_dist
+</code></pre><p>The above example calls <code>gulp polymer_dist</code> assuming that everything needed to deploy is contained inside the gulp task.</p>
+<p>Docker&#39;s image environment lends itself to a Polymer build system due to the dependencies required. A project can contain many web components made by other people, and a Docker image (when built) will contain a working point in time fixing all dependencies to the version at the point of creation (making rollback easy).</p>
+<h2 id="serving-polymer-content">Serving Polymer content</h2>
+<p>Once you have built your site, you need a way of serving the content. If your site is purely static you can simply serve the HTML/JS/CSS statically.</p>
+<p>If however you want to modify the HTML output you can use any templating solution with a server such as <em>express</em>:</p>
+<pre class="highlight"><code class="hljs 1c"><span class="hljs-comment">//Docker</span>
+CMD [ <span class="hljs-string">"node"</span>, <span class="hljs-string">"index"</span> ]
+</code></pre><pre class="highlight"><code class="hljs actionscript"><span class="hljs-comment">//index.js</span>
+
+<span class="hljs-keyword">var</span> express = require(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">var</span> app = express();
+
+<span class="hljs-comment">//Setup routes</span>
+
+app.<span class="hljs-keyword">get</span>(<span class="hljs-string">'/profile'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(req, res)</span> </span>{
+  <span class="hljs-comment">//Cache for 5 seconds</span>
+  res.header(<span class="hljs-string">'Cache-Control'</span>, <span class="hljs-string">'max-age=5'</span>);
+
+  <span class="hljs-comment">//Render page</span>
+  res.render(<span class="hljs-string">'profile'</span>,{
+      <span class="hljs-comment">//Template parameters</span>
+  });
+});
+
+<span class="hljs-comment">//Serve static files, + send cache time</span>
+app.<span class="hljs-keyword">use</span>(express.<span class="hljs-keyword">static</span>(__dirname + <span class="hljs-string">'/dist/'</span>,{maxAge : <span class="hljs-string">'60s'</span>}));
+</code></pre><p>The first code snippet runs <em>node</em> at the end of the Docker build steps.</p>
+<p>The second, is the <em>express</em> server with one route (the gets a profile and allows you to modify data if required), and serves other content statically (the compiled JS for example).</p>
+<h2 id="global-variables">Global variables</h2>
+<p>The advantage of templating is that you can keep the same code for the website and using environment variables switch between a staging environment (QA) and the live environment.</p>
+<pre class="highlight"><code class="hljs handlebars"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span>&gt;</span><span class="javascript">
+  <span class="hljs-built_in">window</span>.MyGlobals = <span class="hljs-built_in">window</span>.MyGlobals || {};
+  <span class="hljs-built_in">window</span>.MyGlobals.APIURL = <span class="hljs-string">'</span></span></span><span class="hljs-expression">{{<span class="hljs-variable">APIADDRESS</span>}}</span><span class="xml"><span class="javascript"><span class="hljs-string">';
+</span></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span>
+</span></code></pre><p>Using the above code, your Polymer project can reference <code>window.MyGlobals.APIURL</code> when it needs to make a network request and not have any knowledge of the environment it&#39;s in.</p>
+<h1 id="caching-and-versioning">Caching and versioning</h1>
+<p>As Polymer files are static in nature, once they are built they can be cached indefinitely. Versioning your HTML / JS output from a Polybuild and serving from a CDN will reduce costs and increase performance of your application.</p>
+<p>The files that have templated information can also be cached by using the appropriate headers from your server (<em>express</em> example above).</p>
+<p>Fixed template variables (such as API endpoints) can be merged into the build step and cached indefinitely in the output.</p>
+<h1 id="preloading-images-and-data">Preloading images and data</h1>
+<p>Polymer projects can build single page web apps, and all data can be loaded asynchronously using AJAX. The problem is that none of these calls will be made until Polymer has finished loading and upgrading the elements.</p>
+<p>If you have any data which you know in advance, you can build it into your pipeline so that when Polymer requests the data the browser already has it in its cache.</p>
+<p>For example if you have some dynamic images loading above-the-fold (and you can compute what they will be ahead of time) you can inject JavaScript into your page to fetch these as soon as the page starts to load so they are warm in the cache when Polymer requests them (when using <a href="https://github.com/PolymerElements/iron-image">iron-image</a> for example).</p>
+<p>As browser performance increases (and HTTP 2.0 is introduced) these optimisations will not be necessary.</p>
+<h1 id="google-analytics">Google Analytics</h1>
+<p>Using Google Analytics, you can view your rendering times across your user base which gives a good indicator of your Polymer performance (from server response time to browser render time). You can create custom dashboards to monitor the stats you need the most (browser usage, popular pages render time etc).</p>
+<h1 id="full-polymer-website-examples">Full Polymer website examples</h1>
+<ul>
+<li><a href="http://gaming.youtube.com">YouTube Gaming</a></li>
+<li><a href="https://elements.polymer-project.org">Polymer Catalog</a></li>
+<li><a href="https://wakelet.com">Wakelet</a></li>
+</ul>
+]]></description>
+            <link>http://webcomponents.org/articles/polymer-in-production</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/polymer-in-production</guid>
+            <pubDate>Tue, 26 Jan 2016 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Polymer Testing Tips]]></title>
+            <description><![CDATA[<p>This article goes through some of the more advanced topics such as user interaction simulation, automatic testing with Continuous Integration, testing on multiple OS/browsers, and more useful tips.</p>
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/polymer-testing-tips</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/polymer-testing-tips</guid>
+            <pubDate>Tue, 05 Jan 2016 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Sane usage of Custom Elements]]></title>
+            <description><![CDATA[<p>Web Components have been an controversial subject that surfaced the Front end world over the last years that I&#39;m still pretty skeptical about its usage on existing and greenfield projects due the lack of good examples on how they can be rolled out to production, but there is sure a way to get started with them without buying in all the hype.</p>
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/sane-usage-of-custom-elements</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/sane-usage-of-custom-elements</guid>
+            <pubDate>Fri, 25 Sep 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[There is an Element for That]]></title>
+            <description><![CDATA[<p>Sebastian attended to the first ever Polymer Summit in Amsterdam recently. This was his first Polymer conference obviously but this was also his first conference &amp; trip to Amsterdam. As an AngularJS developer he was very curious about the Polymer Project and the ambitious ideas behind it. Here is what he had to say.
+<!-- Excerpt --></p>
+]]></description>
+            <link>http://webcomponents.org/articles/there-is-an-element-for-that</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/there-is-an-element-for-that</guid>
+            <pubDate>Sat, 19 Sep 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Write Web Components with ES2015 (ES6)]]></title>
+            <description><![CDATA[This article is the second in a series of tutorials dealing with creation and best practices involved in designing Vanilla Web Component systems.
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/write-web-components-with-es2015</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/write-web-components-with-es2015</guid>
+            <pubDate>Tue, 15 Sep 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Quick Trick: Using Template to Delay Loading of Images]]></title>
+            <description><![CDATA[<p>When it comes to newer elements to play with there are a few that are slightly odd. Canvas is one of them, as it doesn’t do anything without scripting. It is a placeholder for a canvas painting or animation and can contain fallback content when it is not supported. Template is another such element that needs to be addressed in this way.</p>
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/quick-trick-using-template-to-delay-loading-of-images</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/quick-trick-using-template-to-delay-loading-of-images</guid>
+            <pubDate>Tue, 08 Sep 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[What happened to Web Components?]]></title>
+            <description><![CDATA[<p>Three years ago, there was a lot of excitement surrounding Web Components: everybody talked about them, the frameworks Ember and Angular planned to integrate them or even be based on them, etc.</p>
+<p>By now, that excitement seems to have died down. This blog post examines what happened to Web Components. Spoiler: they are alive and well and slowly being adopted across browsers.</p>
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/what-happened-to-web-components</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/what-happened-to-web-components</guid>
+            <pubDate>Mon, 31 Aug 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Taming Polymer with SystemJS and TypeScript, part 1]]></title>
+            <description><![CDATA[<p>Web Components are awesome for building web apps out of interoperable widgets. They’re made out of 4 technologies which
+Polymer 1.0 brings to all major web browsers using polyfills. However one of them, HTML Imports, is so problematic that
+Mozilla refuses to implement it natively. Let’s work around it using SystemJS and discover a whole new and (in my opinion)
+nicer way of working with Polymer!</p>
+<!-- Excerpt -->]]></description>
+            <link>http://webcomponents.org/articles/taming-polymer-with-systemjs-and-typescript-part-1</link>
+            <guid isPermaLink="true">http://webcomponents.org/articles/taming-polymer-with-systemjs-and-typescript-part-1</guid>
+            <pubDate>Thu, 27 Aug 2015 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

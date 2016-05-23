@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[WebComponents.org]]></title>
+        <description><![CDATA[A place to discuss and evolve Web Component best-practices]]></description>
+        <link>http://webcomponents.org</link>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Mon, 23 May 2016 13:00:21 GMT</lastBuildDate>
+        <atom:link href="http://webcomponents.org/podcasts.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Mon, 23 May 2016 12:59:29 GMT</pubDate>
+        <item>
+            <title><![CDATA[82: Are Web Components Ready Now?]]></title>
+            <description><![CDATA[<p>This episode is a follow up on episode 59 &#39;Are Web Components Ready Yet?&#39;. Leon, Justin &amp; Erik chat about where we are in Web Component development today and what&#39;s happened over the past 6 months.</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/82-are-web-components-ready-now</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/82-are-web-components-ready-now</guid>
+            <pubDate>Mon, 02 May 2016 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[79: Basic web components and best practices]]></title>
+            <description><![CDATA[<p>There is more than one set of custom elements out there. In this episode, we speak with Jan Miksovsky about basic web components, a comprehensive set of high-quality web components for common user interface patterns.</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/79-basic-web-components-and-best-practices</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/79-basic-web-components-and-best-practices</guid>
+            <pubDate>Wed, 09 Mar 2016 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[71: Vaadin Elements]]></title>
+            <description><![CDATA[<p>Danny Blue and Justin Ribeiro chat with Manolo Carrasco and Moñino Jouni Koivuviita from Vaadin about their work with Web Components in the enterprise world. Vaadin has begun to create enterprise ready web components ‘ready for production’ usage. Built on top of Polymer, Vaadin Elements are helping to push new web technologies to larger companies.</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/71-vaadin-elements</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/71-vaadin-elements</guid>
+            <pubDate>Mon, 07 Dec 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[70: Web Components at Microsoft]]></title>
+            <description><![CDATA[<p>Daniel Buchner, former Mozillian &amp; Program Manager at Microsoft takes us through the plans for Web Components at Microsoft. Daniel is the creator of the Web Components free open source library, X-Tag which Microsoft is now officially supporting and using as of release 1.5. How are the teams at Microsoft using Web Components now and what is the plan for the future?</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/70-web-components-at-microsoft</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/70-web-components-at-microsoft</guid>
+            <pubDate>Tue, 24 Nov 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[07: Chrome Dev Summit]]></title>
+            <description><![CDATA[<p>Live from the Chrome Dev Summit, our special guests Taylor Savage and Jeff Posnick talk to us about service workers and the Polymer State of the Union.</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/7-chrome-dev-summit</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/7-chrome-dev-summit</guid>
+            <pubDate>Wed, 18 Nov 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[06: Component Show]]></title>
+            <description><![CDATA[<p>Components, components, components! We join Charles Grugan and discuss our favorite components and their uses.</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/6-component-show</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/6-component-show</guid>
+            <pubDate>Thu, 12 Nov 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Understanding Web Components and Polymer with Monica Dinculescu]]></title>
+            <description><![CDATA[<p>Monica Dinculescu works on Polymer and Chrome for Google. In this episode she teaches Scott all about Web Components and the Polymer Project. Are Web Components the future of the web, and why? Where does Polymer fit in, and what should YOU use if you are starting a project today?</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/understanding-web-components-and-polymer</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/understanding-web-components-and-polymer</guid>
+            <pubDate>Fri, 30 Oct 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[66: Custom Elements & Skate.js]]></title>
+            <description><![CDATA[<p>Atlassian leaders Trey Shugart and Jonathon Creenaune chat with us about how and why they created Skate.js. Skate is a lightweight Web Components wrapper created to help the needs of a large and diverse technology stack while providing simplicity and almost no-barrier-to-entry. Only focusing on Custom Elements, Skate has made its code base easy for companies to buy into.</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/66-custom-elements-and-skatejs</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/66-custom-elements-and-skatejs</guid>
+            <pubDate>Tue, 20 Oct 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[65: Strand Web Components]]></title>
+            <description><![CDATA[<p>MediaMath has created an open source project built on top of Web Components &amp; Polymer called Strand. It was created for their internal web product Terminal One but is available and easy to get on Github. Daniel Lasky, Justin Moore, &amp; Anthony Koerber chat with us about the pains of migrating from Polymer 0.5 to 1.0 as well as what it has been like to drive an open source Web Components library with Polymer Elements ranging from basic buttons to complex grids. Check out Strand’s documentation for further detail</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/65-strand-web-components</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/65-strand-web-components</guid>
+            <pubDate>Tue, 13 Oct 2015 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[05: Polymer Summit]]></title>
+            <description><![CDATA[<p>Now that the Polymer Summit is over but not forgotten, we review our favorite moments from the conference.</p>
+]]></description>
+            <link>http://webcomponents.org/podcasts/5-polymer-summit</link>
+            <guid isPermaLink="true">http://webcomponents.org/podcasts/5-polymer-summit</guid>
+            <pubDate>Mon, 05 Oct 2015 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
